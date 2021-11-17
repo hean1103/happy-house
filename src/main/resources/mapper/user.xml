@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.user.UserMapper">
+
+	<insert id="signUpUser" parameterType="userDto">
+		insert into house_user (userId,  userPwd, userName, email, addr, phone)
+		values (#{userId}, #{userPwd}, #{userName}, #{email}, #{addr}, #{phone} )
+	</insert>
+	
+	<select id="login" parameterType="map" resultType="UserDto">
+		select userName, userId, email, addr, phone, userPwd
+		from house_user
+		where userId = #{userId} and userPwd = #{userPwd}
+	</select>
+	
+
+	<select id="idCheck" parameterType="string" resultType="int">
+		select count(userId)
+		from house_user
+		where userId = #{userId}
+	</select>
+	
+
+	<select id="findPwd" parameterType="map" resultType="UserDto">
+		select userName, userId, userPwd, email
+		from house_user
+		where userId = #{userId} and userName = #{userName} and email = #{email}
+
+	</select>
+	
+	<update id="updateUser" parameterType="UserDto" >
+		update house_user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userPwd != null"> userPwd = #{userPwd},</if>
+			<if test="userName != null">userName = #{userName},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="email != null">email = #{email},</if>
+		</trim>
+		where userId = #{userId}
+	</update>
+	
+
+
+	<select id="listMember" resultType="userDto">
+		select userId, userPwd, userName, email, addr
+		from house_user;
+		
+	</select>
+	
+	<insert id="registerMember" parameterType="userDto">
+		insert into house_user (userId, userName, userPwd, email, addr)
+		values (#{userId}, #{userName}, #{userPwd}, #{email}, #{addr})
+	</insert>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from house_user
+		where userId = #{userId}
+	</delete>
+	
+	<update id="updateMember" parameterType="userDto">
+		update house_user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userPwd != null">userPwd = #{userPwd},</if>
+			<if test="email != null">email = #{email},</if>
+		</trim>
+		where userId = #{userId}
+	</update>
+
+	<delete id="deleteUser" parameterType="String" >
+		delete from house_user
+		where userId = #{userId}
+	</delete>
+	
+
+
+</mapper>
