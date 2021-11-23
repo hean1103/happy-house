@@ -9,7 +9,7 @@
 		values (#{userId}, #{userPwd}, #{userName}, #{email}, #{addr}, #{phone} )
 	</insert>
 	
-	<select id="login" parameterType="map" resultType="UserDto">
+	<select id="login" parameterType="userDto" resultType="UserDto">
 		select userName, userId, email, addr, phone, userPwd
 		from house_user
 		where userId = #{userId} and userPwd = #{userPwd}
@@ -72,6 +72,12 @@
 		delete from house_user
 		where userId = #{userId}
 	</delete>
+	
+	<select id="userInfo" parameterType="String" resultType="userDto">
+		select userName, userId, email
+		from house_user
+		where userId = #{userId}
+	</select>
 	
 
 

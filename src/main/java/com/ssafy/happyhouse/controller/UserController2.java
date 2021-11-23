@@ -1,26 +1,46 @@
 package com.ssafy.happyhouse.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ssafy.happyhouse.model.dto.UserDto;
+import com.ssafy.happyhouse.service.JwtServiceImpl;
 import com.ssafy.happyhouse.service.UserService;
 
-@Controller
-@RequestMapping("/user")
-public class UserController {
+
+import io.swagger.annotations.ApiParam;
+
+	
+
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@RestController
+@RequestMapping("/users")
+public class UserController2 {
+	
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+	
+	@Autowired
+	private JwtServiceImpl jwtService;
+	
 	@Autowired
 	private UserService userService;
 	
@@ -39,11 +59,67 @@ public class UserController {
 		userService.signUpUser(userDto);
 		return "index";
 	}
+	@PostMapping("/login")
+	public ResponseEntity<Map<String,Object>> loginUser(@RequestBody UserDto userDto, Model model, HttpSession session,
+			HttpServletResponse response) throws Exception {
+//		String tokenTest = jwtService.create("id", userDto, "access");
+//		System.out.println(tokenTest);
+		System.out.println("map : "+ userDto.getUserId());
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			UserDto loginUser = userService.login(userDto);
+			if (loginUser != null) {
+				String token = jwtService.create("userid", loginUser.getUserId(), "access-token");// key, data, subject
+				System.out.println("토큰정보 : "+token);
+				resultMap.put("access-token", token);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			System.out.println("로그인 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String,Object>>(resultMap,status);
+	}
 	
-//	@PostMapping("/login")
-//	public String loginUser(@RequestParam Map<String, String> map, Model model, HttpSession session,
+	@GetMapping("/info/{userid}")
+	public ResponseEntity<Map<String, Object>> getInfo(
+			@PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid,
+			HttpServletRequest request) {
+//		logger.debug("userid : {} ", userid);
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		if (jwtService.isUsable(request.getHeader("access-token"))) {
+			System.out.println("사용가능한 토큰");
+			try {
+//				로그인 사용자 정보.
+				UserDto memberDto = userService.userInfo(userid);
+				resultMap.put("userInfo", memberDto);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				System.out.println("정보조회 실패");
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			System.out.println("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.ACCEPTED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+//	@PostMapping("/login2")
+//	public String loginUser2(@RequestParam Map<String, String> map, Model model, HttpSession session,
 //			HttpServletResponse response) throws Exception {
-//		UserDto userDto = userService.login(map);
+//		//UserDto userDto = userService.login(map);
 ////		String id = map.get("userId");
 ////		String pwd = map.get("userPwd");
 ////		if("ssafy".equals(id) && "ssafy".equals(pwd)) {

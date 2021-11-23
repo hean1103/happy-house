@@ -15,7 +15,7 @@ public interface UserService {
 	public void updateUser(UserDto userDto) throws Exception;
 //
 	/* 로그인 */
-	public UserDto login(Map<String, String> map) throws Exception;
+	public UserDto login(UserDto userDto) throws Exception;
 
 //	
 //	/* 비밀번호 찾기 */
@@ -46,5 +46,7 @@ public interface UserService {
 	
 	/* 삭제 */
 	public void deleteUser(String userId) throws Exception;
+
+	public UserDto userInfo(String userid) throws Exception;
 
 }

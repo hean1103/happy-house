@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.ssafy.happyhouse.model.dto.UserDto;
 
+
 public interface UserMapper {
 	/* 회원 정보 가입  */
 	public void signUpUser(UserDto userDto) throws SQLException;
@@ -14,7 +15,7 @@ public interface UserMapper {
 	public void updateUser(UserDto userDto) throws SQLException;
 
 	/* 로그인 */
-	public UserDto login(Map<String, String> map) throws SQLException;
+	public UserDto login(UserDto userDto) throws SQLException;
 	
 	/* 비밀번호 찾기 */
 	public UserDto findPwd(Map<String, String> map) throws SQLException;
@@ -33,6 +34,8 @@ public interface UserMapper {
 	public void deleteMember(String userId) throws Exception;
 
 	public void updateMember(UserDto userDto);
+	public UserDto userInfo(String userid) throws SQLException;
+	
 
 	
 

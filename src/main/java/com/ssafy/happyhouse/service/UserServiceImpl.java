@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto login(Map<String, String> map)throws Exception {
-		return sqlSession.getMapper(UserMapper.class).login(map);
+	public UserDto login(UserDto userDto)throws Exception {
+		return sqlSession.getMapper(UserMapper.class).login(userDto);
 	}
 	
 	
@@ -75,6 +75,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(String userId) throws Exception {
 		sqlSession.getMapper(UserMapper.class).deleteUser(userId);
+	}
+
+	@Override
+	public UserDto userInfo(String userid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
 	}
 
 }
