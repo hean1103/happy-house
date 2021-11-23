@@ -50,7 +50,7 @@ public class QnaServiceImpl implements QnaService {
 	@Override
 	@Transactional
 	public boolean deleteArticle(int articleno) throws Exception {
-		sqlSession.getMapper(QnaMapper.class).deleteMemo(articleno);
+
 		return sqlSession.getMapper(QnaMapper.class).deleteArticle(articleno) == 1;
 	}
 
