@@ -19,16 +19,17 @@
 -- Table structure for table `vue_board`
 --
 
-DROP TABLE IF EXISTS `vue_board`;
+DROP TABLE IF EXISTS `board`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `vue_board` (
-  `no` int NOT NULL AUTO_INCREMENT,
-  `writer` varchar(16) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
+CREATE TABLE `board` (
+  `articleno` int NOT NULL AUTO_INCREMENT,
+  `hit` int DEFAULT NULL,
+  `userid` varchar(16) DEFAULT NULL,
+  `subject` varchar(100) DEFAULT NULL,
   `content` varchar(2000) DEFAULT NULL,
   `regtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`no`)
+  PRIMARY KEY (`articleno`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,10 +37,10 @@ CREATE TABLE `vue_board` (
 -- Dumping data for table `vue_board`
 --
 
-LOCK TABLES `vue_board` WRITE;
-/*!40000 ALTER TABLE `vue_board` DISABLE KEYS */;
-INSERT INTO `vue_board` VALUES (1,'권도혁','테스트','테스트중입니다.1','2021-11-17 10:58:22'),(2,'권도혁','힘듬','테스트1','2021-11-17 11:12:30');
-/*!40000 ALTER TABLE `vue_board` ENABLE KEYS */;
+LOCK TABLES `board` WRITE;
+/*!40000 ALTER TABLE `board` DISABLE KEYS */;
+INSERT INTO `board` VALUES (1,0,'권도혁','테스트','테스트중입니다.1','2021-11-17 10:58:22'),(2,0,'권도혁','힘듬','테스트1','2021-11-17 11:12:30');
+/*!40000 ALTER TABLE `board` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,3 +53,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2021-11-17 20:46:24
+use happyhouse;
+select * from board;
