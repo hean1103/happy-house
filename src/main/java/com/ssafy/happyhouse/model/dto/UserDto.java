@@ -76,6 +76,12 @@ public class UserDto {
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDto [userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName + ", email=" + email
+				+ ", addr=" + addr + ", phone=" + phone + "]";
+	}
 	
 	
 	

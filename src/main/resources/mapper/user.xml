@@ -74,7 +74,7 @@
 	</delete>
 	
 	<select id="userInfo" parameterType="String" resultType="userDto">
-		select userName, userId, email
+		select userName, userId, email,phone
 		from house_user
 		where userId = #{userId}
 	</select>
