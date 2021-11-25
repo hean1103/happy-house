@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 @Api("게시판 컨트롤러  API V1")
 public class QnaController {
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(QnaController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
